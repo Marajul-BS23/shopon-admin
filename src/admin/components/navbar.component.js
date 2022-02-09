@@ -9,7 +9,7 @@ const Navbar = () => {
             <Link className="navbar-brand lf" to="/admin/create-new">
                 Creat New Admin
             </Link>
-            <Link className="navbar-brand lf" to="/admin/update">
+            <Link className="navbar-brand lf" to="/admin/himel">
                 Update Admin
             </Link>
         </nav>
