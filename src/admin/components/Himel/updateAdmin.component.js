@@ -8,13 +8,13 @@ const UpdteAdmin = (props) => {
     const [user, setUser] = useState();
     const [loggedIn, setLoggedIn] = useState(false);
 
-    const [admin, setAdmin] = useState({
+    const [admin] = useState({
         email: "habiburrahman3089@gmail.com",
         password: "P@ssword123",
     });
     const removeNull = (value) => {
         if (value === null) return "";
-        if(!value) return "";
+        if (!value) return "";
         return value;
     };
 
@@ -38,6 +38,7 @@ const UpdteAdmin = (props) => {
         try {
             console.log("up date data : ", data);
             const updatedUser = {
+                profile_id: 1,
                 first_name: data.first_name,
                 last_name: data.last_name,
                 email: data.email,
@@ -54,7 +55,7 @@ const UpdteAdmin = (props) => {
 
             window.location.href = "/admin/himel";
         } catch (error) {
-            console.log(error);
+            console.log(error.response.data);
             console.log("shows error but updates ");
             props.history.push("/admin/himel");
             // window.location.href = "/admin/himel";
@@ -139,9 +140,7 @@ const UpdteAdmin = (props) => {
                                         htmlFor="first_name"
                                     >
                                         First Name
-                                        <span className="text-danger">
-                                            *
-                                        </span>
+                                        <span className="text-danger">*</span>
                                     </label>
                                     <Field
                                         className="form-control"
@@ -160,9 +159,7 @@ const UpdteAdmin = (props) => {
                                         htmlFor="last_name"
                                     >
                                         Last Name
-                                        <span className="text-danger">
-                                            *
-                                        </span>
+                                        <span className="text-danger">*</span>
                                     </label>
                                     <Field
                                         className="form-control"
@@ -181,9 +178,7 @@ const UpdteAdmin = (props) => {
                                         htmlFor="email"
                                     >
                                         Email
-                                        <span className="text-danger">
-                                            *
-                                        </span>
+                                        <span className="text-danger">*</span>
                                     </label>
                                     <Field
                                         className="form-control"
@@ -202,9 +197,7 @@ const UpdteAdmin = (props) => {
                                         htmlFor="password"
                                     >
                                         Password
-                                        <span className="text-danger">
-                                            *
-                                        </span>
+                                        <span className="text-danger">*</span>
                                     </label>
                                     <Field
                                         className="form-control"
@@ -223,9 +216,7 @@ const UpdteAdmin = (props) => {
                                         htmlFor="confirm_password"
                                     >
                                         Confirm Password
-                                        <span className="text-danger">
-                                            *
-                                        </span>
+                                        <span className="text-danger">*</span>
                                     </label>
                                     <Field
                                         className="form-control"
@@ -244,9 +235,7 @@ const UpdteAdmin = (props) => {
                                         htmlFor="role_id"
                                     >
                                         Role ID
-                                        <span className="text-danger">
-                                            *
-                                        </span>
+                                        <span className="text-danger">*</span>
                                     </label>
                                     <Field
                                         className="form-control"
@@ -269,9 +258,11 @@ const UpdteAdmin = (props) => {
                         )}
                     </Formik>
                 </div>
-            ) : <>
-            <h1>There is no user of id {props.location.state?.data}</h1>
-            </>}
+            ) : (
+                <>
+                    <h1>There is no user of id {props.location.state?.data}</h1>
+                </>
+            )}
         </>
     );
 };

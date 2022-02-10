@@ -1,21 +1,71 @@
 import SignInSchema from "../../schema/admin.schema";
 import { Formik, Field, Form } from "formik";
-
+import { useState } from "react";
 import axios from "axios";
 import { useEffect } from "react";
 const AddNewUser = () => {
+    const admin = {
+        email: "habiburrahman3089@gmail.com",
+        password: "P@ssword123",
+    };
+    const [apiError, setapiError] = useState(null);
     const ApiSubmit = async (values) => {
-        const response = await axios.post("http://localhost:5000/api/users", {
+        const newAdmin = {
+            profile_id: 1,
             first_name: values.firstName,
-            last_name: values.astName,
+            last_name: values.lastName,
             email: values.email,
             password: values.password,
             confirm_password: values.confirmPassword,
-            role_id: 5,
-        });
-        console.log(response);
+            role_id: values.role_id,
+        };
+        console.log(values);
+        console.log(newAdmin);
+        // const newAdmin = {
+        //     profile_id: 1,
+        //     first_name: "Tester01",
+        //     last_name: "Test01",
+        //     email: "test120@gmail.com",
+        //     password: "123456789",
+        //     confirm_password: "123456789",
+        //     role_id: 5,
+        // };
+        // console.log(newAdmin);
+        try {
+            const response = await axios.post(
+                "http://localhost:5000/api/users",
+                newAdmin,
+                { withCredentials: true }
+            );
+            console.log(response);
+        } catch (e) {
+            console.log(e.response.data);
+            if (
+                e.response.data ===
+                "Already registered with this email address."
+            ) {
+                setapiError(e.response.data);
+            }
+        }
     };
-    useEffect(() => {});
+    async function handleLogin(data) {
+        try {
+            const response = await axios.post(
+                "http://localhost:5000/api/login",
+                data,
+                { withCredentials: true }
+            );
+            localStorage.setItem("access_token", response.data.access_token);
+            console.log(response);
+            console.log("loged in ");
+        } catch (error) {
+            console.log(error);
+            alert("Error happened");
+        }
+    }
+    useEffect(() => {
+        handleLogin(admin);
+    }, []);
 
     return (
         <>
@@ -26,9 +76,10 @@ const AddNewUser = () => {
                     firstName: "",
                     lastName: "",
                     confirmPassword: "",
+                    role_id: "",
                 }}
                 onSubmit={(values) => {
-                    console.log(values);
+                    // console.log(values);
                     // alert(JSON.stringify(values, null, 2));
                     ApiSubmit(values);
                 }}
@@ -57,6 +108,8 @@ const AddNewUser = () => {
                                         </div>
                                     ) : null}
                                 </div>
+                            </div>
+                            <div className="row g-3">
                                 <div className="col">
                                     <label
                                         htmlFor="lastName"
@@ -96,6 +149,11 @@ const AddNewUser = () => {
                                             {errors.email}
                                         </div>
                                     ) : null}
+                                    {apiError ? (
+                                        <div className="invalid-feedback d-block">
+                                            {apiError}
+                                        </div>
+                                    ) : null}
                                 </div>
                             </div>
                             <div className="row g-3">
@@ -118,6 +176,8 @@ const AddNewUser = () => {
                                         </div>
                                     ) : null}
                                 </div>
+                            </div>
+                            <div className="row g-3">
                                 <div className="col">
                                     <label
                                         htmlFor="confirmPassword"
@@ -130,10 +190,32 @@ const AddNewUser = () => {
                                         className="form-control"
                                         id="confirmPassword"
                                         name="confirmPassword"
+                                        values=""
                                     />
                                     {errors.confirmPassword ? (
                                         <div className="invalid-feedback d-block">
                                             {errors.confirmPassword}
+                                        </div>
+                                    ) : null}
+                                </div>
+                            </div>
+                            <div className="row g-3">
+                                <div className="col">
+                                    <label
+                                        htmlFor="role_id"
+                                        className="col-form-label"
+                                    >
+                                        Role ID
+                                    </label>
+                                    <Field
+                                        type="role_id"
+                                        className="form-control"
+                                        id="role_id"
+                                        name="role_id"
+                                    />
+                                    {errors.role_id ? (
+                                        <div className="invalid-feedback d-block">
+                                            {errors.role_id}
                                         </div>
                                     ) : null}
                                 </div>
